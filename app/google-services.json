@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "826222919964",
+    "firebase_url": "https://betweenus-255e5.firebaseio.com",
+    "project_id": "betweenus-255e5",
+    "storage_bucket": "betweenus-255e5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:826222919964:android:e44aa13da542a37b367ad9",
+        "android_client_info": {
+          "package_name": "com.example.betweenus"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "826222919964-u7elulilo8ql0k2q0ghhme8fcvna5itd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC81O3fiGuVN7_Hn5H51yvaQy7G_uMBT4A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "826222919964-u7elulilo8ql0k2q0ghhme8fcvna5itd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

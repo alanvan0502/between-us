@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <dimen name="common_4dp">4dp</dimen>
     <dimen name="common_8dp">8dp</dimen>
+    <dimen name="common_16dp">16dp</dimen>
+    <dimen name="common_24dp">24dp</dimen>
+    <dimen name="common_48dp">48dp</dimen>
+    <dimen name="common_5dp">5dp</dimen>
+    <dimen name="standard_text_size">14sp</dimen>
 </resources>

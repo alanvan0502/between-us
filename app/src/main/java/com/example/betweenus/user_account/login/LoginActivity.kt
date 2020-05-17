@@ -29,16 +29,8 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        Log.d("dmdmdm -  Context", context.toString())
-        Log.d("dmdmdm -  testString1", testString1)
-        Log.d("dmdmdm -  testString2", testString2)
-        Log.d("dmdmdm", "$testConcreteImpl")
-        Log.d("dmdmdm", "${testConcreteImpl.input}")
 
-        Log.d("dmdmdm -  ViewModel", viewModel.toString())
-        Log.d("dmdmdm -  testValue", viewModel.testValue.toString())
         viewModel.testValue += 1
-        Log.d("dmdmdm -  testValue", viewModel.testValue.toString())
     }
 
     companion object {

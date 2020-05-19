@@ -7,6 +7,7 @@ import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.suspendCancellableCoroutine
 import org.koin.java.KoinJavaComponent.inject
 import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
 
 class AccountRepositoryImpl : AccountRepository {
 
@@ -17,14 +18,14 @@ class AccountRepositoryImpl : AccountRepository {
         return auth.currentUser != null
     }
 
-    override suspend fun signIn(data: SignInData): Result<Boolean> {
+    override suspend fun signIn(data: SignInData) {
         return suspendCancellableCoroutine { cont ->
             auth.signInWithEmailAndPassword(
                 data.email, data.password
             ).addOnSuccessListener {
-                cont.resume(Result.Success())
+                cont.resume(Unit)
             }.addOnFailureListener {
-                cont.resume(Result.Error(it))
+                cont.resumeWithException(it)
             }
         }
     }

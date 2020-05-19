@@ -13,7 +13,7 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".SignUpActivity"
+            android:name=".user_account.sign_up.SignUpActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustResize"/>
@@ -24,7 +24,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
-            android:name=".LoginActivity"
+            android:name=".user_account.login.LoginActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustResize">

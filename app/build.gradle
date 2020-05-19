@@ -28,25 +28,23 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(":domain")
+    api project(":repository")
+
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.core:core-ktx:1.2.0'
-    testImplementation 'junit:junit:4.13'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
-    implementation "org.koin:koin-android:2.1.5"
-    implementation "org.koin:koin-android-scope:2.1.5"
-    implementation "org.koin:koin-android-viewmodel:2.1.5"
+    implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.2.0"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"
 
     implementation "com.google.android.material:material:1.1.0"
     implementation "androidx.appcompat:appcompat:1.1.0"
     implementation "androidx.viewpager2:viewpager2:1.0.0"
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta6'
 
-    // Firebase
-    implementation 'com.google.firebase:firebase-analytics:17.4.1'
-    implementation "com.google.firebase:firebase-auth-ktx:19.3.1"
-    implementation "com.google.firebase:firebase-firestore-ktx:21.4.3"
-    implementation 'com.google.firebase:firebase-storage-ktx:19.1.1'
+    testImplementation 'junit:junit:4.13'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 }

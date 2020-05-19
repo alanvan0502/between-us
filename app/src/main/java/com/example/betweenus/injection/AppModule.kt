@@ -9,9 +9,5 @@ object AppModule {
 
     fun get() = module {
         viewModel { LoginViewModel() }
-
-        single(DependencyTag.DISPATCHERS_DEFAULT) { Dispatchers.Default }
-        single(DependencyTag.DISPATCHERS_MAIN) { Dispatchers.Main }
-        single(DependencyTag.DISPATCHERS_IO) { Dispatchers.IO }
     }
 }

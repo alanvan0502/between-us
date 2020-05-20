@@ -4,8 +4,9 @@ import com.example.domain.account.data.User
 import com.example.domain.base.DataMapper
 import com.google.firebase.auth.FirebaseUser
 
-class UserMapper: DataMapper<FirebaseUser, User>() {
-    override fun map(source: FirebaseUser): User {
+class UserMapper : DataMapper<FirebaseUser?, User?>() {
+    override fun map(source: FirebaseUser?): User? {
+        source ?: return null
         return User(
             uid = source.uid,
             displayName = source.displayName,

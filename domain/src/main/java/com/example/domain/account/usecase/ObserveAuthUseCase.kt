@@ -11,9 +11,9 @@ import kotlinx.coroutines.flow.map
 class ObserveAuthUseCase(
     coroutineDispatcher: CoroutineDispatcher,
     private val accountRepository: AccountRepository
-) : FlowUseCase<Any, User>(coroutineDispatcher) {
+) : FlowUseCase<Any, User?>(coroutineDispatcher) {
 
-    override fun execute(params: Any): Flow<Result<User>> {
+    override fun execute(params: Any): Flow<Result<User?>> {
         return accountRepository.observeAuthStatus().map {
             Result.Success(it)
         }

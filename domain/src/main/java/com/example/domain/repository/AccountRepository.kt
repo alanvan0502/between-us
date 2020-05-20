@@ -8,5 +8,6 @@ import kotlinx.coroutines.flow.Flow
 interface AccountRepository {
     fun isUserSignedIn(): Boolean
     suspend fun signIn(data: SignInData)
-    fun observeAuthStatus(): Flow<User>
+    fun observeAuthStatus(): Flow<User?>
+    fun logout()
 }

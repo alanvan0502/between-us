@@ -20,8 +20,8 @@ class LoginViewModel : ViewModel() {
     private val _signInLiveData = MutableLiveData<Result<Unit>>()
     val signInLiveData: LiveData<Result<Unit>> = _signInLiveData
 
-    private val _userLiveData = MutableLiveData<Result<User>>()
-    val userLiveData: LiveData<Result<User>> = _userLiveData
+    private val _userLiveData = MutableLiveData<Result<User?>>()
+    val userLiveData: LiveData<Result<User?>> = _userLiveData
 
     private val signInWithEmailAndPasswordUseCase
             by inject(SignInWithEmailAndPasswordUseCase::class.java)

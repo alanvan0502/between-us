@@ -4,32 +4,27 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Patterns
-import android.view.View
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.example.betweenus.R
 import com.example.betweenus.helper.addSimpleTextChangedListener
 import com.example.betweenus.helper.hideSoftInputKeyboard
 import com.example.betweenus.helper.toStringOrEmptyString
 import com.example.betweenus.main.MainActivity
-import com.example.domain.base.Result
+import com.example.betweenus.user_account.BaseActivity
+import com.example.betweenus.user_account.sign_up.SignUpActivity
 import com.example.domain.base.data
 import kotlinx.android.synthetic.main.activity_login.*
-import kotlinx.android.synthetic.main.progress_bar.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class LoginActivity : AppCompatActivity() {
+class LoginActivity : BaseActivity() {
 
     private val viewModel: LoginViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+        bindViews()
         setupViewModel()
-        if (viewModel.isUserSignedIn()) {
-            goToMainActivity()
-        }
     }
 
     override fun onResume() {
@@ -37,19 +32,19 @@ class LoginActivity : AppCompatActivity() {
         setupLoginButton()
         setupEmailEditText()
         setupPasswordEditText()
+        setupGoToSignUpButton()
     }
 
     private fun setupViewModel() {
+        if (viewModel.isUserSignedIn()) {
+            goToMainActivity()
+        }
         viewModel.apply {
             getAuthStatusFlow()
             signInLiveData.observe(this@LoginActivity, Observer {
-                when (it) {
-                    is Result.Loading -> showLoading()
-                    is Result.Success -> hideLoading()
-                    is Result.Error -> showError(it.throwable.toString())
-                }
+                observeResultStates(it)
             })
-            userLiveData.observe(this@LoginActivity, Observer {
+            authDataLiveData.observe(this@LoginActivity, Observer {
                 it.data?.uid?.let {
                     goToMainActivity()
                 }
@@ -57,24 +52,18 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+    private fun setupGoToSignUpButton() {
+        go_to_sign_up.setOnClickListener {
+            SignUpActivity.newIntent(this).also {
+                startActivity(it)
+                finish()
+            }
+        }
+    }
+
     private fun goToMainActivity() {
         startActivity(MainActivity.newIntent(this))
         finish()
-    }
-
-    private fun showLoading() {
-        progress_bar.visibility = View.VISIBLE
-        container.visibility = View.GONE
-    }
-
-    private fun hideLoading() {
-        progress_bar.visibility = View.GONE
-        container.visibility = View.VISIBLE
-    }
-
-    private fun showError(errorMessage: String) {
-        hideLoading()
-        Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
     }
 
     private fun setupEmailEditText() {

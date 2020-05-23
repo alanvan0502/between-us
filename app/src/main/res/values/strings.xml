@@ -10,4 +10,13 @@
     <string name="password_required">Password is required</string>
     <string name="check_email_password">Please check your email and password</string>
     <string name="logout">Logout</string>
+    <string name="name">Name</string>
+    <string name="phone_input">Phone</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="go_to_login">Already have an account? Go to Login</string>
+    <string name="empty_name_error">Name must not be empty</string>
+    <string name="empty_phone_error">Phone must not be empty</string>
+    <string name="invalid_email_error">Invalid email</string>
+    <string name="password_no_match_error">Password do not match</string>
+    <string name="sign_up_button_text">Sign Up</string>
 </resources>

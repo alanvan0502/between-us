@@ -5,15 +5,15 @@ import kotlinx.coroutines.withContext
 
 abstract class SuspendUseCase<in P, R>(private val coroutineDispatcher: CoroutineDispatcher) {
 
-    suspend operator fun invoke(params: P): Result<R> {
+    suspend operator fun invoke(params: P): BUResult<R> {
         return try {
             withContext(coroutineDispatcher) {
                 execute(params).let {
-                    Result.Success(it)
+                    BUResult.Success(it)
                 }
             }
         } catch (e: Throwable) {
-            Result.Error(e)
+            BUResult.Error(e)
         }
     }
 

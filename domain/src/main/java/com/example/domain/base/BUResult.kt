@@ -16,17 +16,17 @@
 
 package com.example.domain.base
 
-import com.example.domain.base.Result.Success
+import com.example.domain.base.BUResult.Success
 
 /**
  * A generic class that holds a value with its loading status.
  * @param <T>
  */
-sealed class Result<out R> {
+sealed class BUResult<out R> {
 
-    data class Success<out T>(val data: T? = null) : Result<T>()
-    data class Error(val throwable: Throwable) : Result<Nothing>()
-    object Loading : Result<Nothing>()
+    data class Success<out T>(val data: T? = null) : BUResult<T>()
+    data class Error(val throwable: Throwable) : BUResult<Nothing>()
+    object Loading : BUResult<Nothing>()
 
     override fun toString(): String {
         return when (this) {
@@ -38,11 +38,11 @@ sealed class Result<out R> {
 }
 
 /**
- * [Success.data] if [Result] is of type [Success]
+ * [Success.data] if [BUResult] is of type [Success]
  */
-fun <T> Result<T>.successOr(fallback: T): T {
+fun <T> BUResult<T>.successOr(fallback: T): T {
     return (this as? Success<T>)?.data ?: fallback
 }
 
-val <T> Result<T>.data: T?
+val <T> BUResult<T>.data: T?
     get() = (this as? Success)?.data

@@ -5,10 +5,12 @@ import com.example.betweenus.injection.AppModule
 import com.example.betweenus.injection.DomainModule
 import com.example.betweenus.injection.RepositoryModule
 import com.example.repository.RepositoryApp
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 
+@ExperimentalCoroutinesApi
 @Suppress("unused")
 class BetweenUsApp : Application() {
 

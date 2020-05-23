@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity() {
     private fun setupViewModel() {
         mainViewModel.apply {
             getAuthStatusFlow()
-            userLiveData.observe(this@MainActivity, Observer {
+            authDataLiveData.observe(this@MainActivity, Observer {
                 if (it.data?.uid == null) {
                     goToLoginActivity()
                 }

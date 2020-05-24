@@ -8,6 +8,7 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.example.betweenus.R
+import com.example.betweenus.helper.startActivityAndFinish
 import com.example.betweenus.user_account.login.LoginActivity
 import com.example.domain.base.data
 import com.google.android.material.snackbar.Snackbar
@@ -54,15 +55,10 @@ class MainActivity : AppCompatActivity() {
             getAuthStatusFlow()
             authDataLiveData.observe(this@MainActivity, Observer {
                 if (it.data?.uid == null) {
-                    goToLoginActivity()
+                    startActivityAndFinish(LoginActivity::class.java)
                 }
             })
         }
-    }
-
-    private fun goToLoginActivity() {
-        startActivity(LoginActivity.newIntent(this))
-        finish()
     }
 
     private fun setupPagerAdapter() {

@@ -6,11 +6,14 @@ import android.os.Bundle
 import android.util.Patterns
 import androidx.lifecycle.Observer
 import com.example.betweenus.R
+import com.example.betweenus.helper.startActivityAndFinish
 import com.example.betweenus.helper.toStringOrEmptyString
 import com.example.betweenus.helper.verify
+import com.example.betweenus.main.MainActivity
 import com.example.betweenus.user_account.BaseActivity
 import com.example.domain.account.data.SignUpData
 import com.example.domain.account.data.User
+import com.example.domain.base.BUResult
 import kotlinx.android.synthetic.main.activity_signup.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -38,6 +41,9 @@ class SignUpActivity : BaseActivity() {
         viewModel.apply {
             signUpLiveData.observe(this@SignUpActivity, Observer {
                 observeResultStates(it)
+                if (it is BUResult.Success && viewModel.isUserSignedIn()) {
+                    startActivityAndFinish(MainActivity::class.java)
+                }
             })
         }
     }
@@ -46,22 +52,22 @@ class SignUpActivity : BaseActivity() {
         sign_up_button.setOnClickListener {
             verifyAllFields()
             if (isAllFieldsValid()) {
-                viewModel.signUp(
-                    data = SignUpData(
-                        user = User(
-                            name = name_input.text.toStringOrEmptyString(),
-                            email = email_input.text.toStringOrEmptyString(),
-                            photoUrl = "",
-                            phoneNumber = phone_input.text.toStringOrEmptyString(),
-                            statusUrl = "",
-                            statusTime = ""
-                        ),
-                        password = password_input.text.toStringOrEmptyString()
-                    )
-                )
+                viewModel.signUp(data = getSignUpData())
             }
         }
     }
+
+    private fun getSignUpData() = SignUpData(
+        user = User(
+            name = name_input.text.toStringOrEmptyString(),
+            email = email_input.text.toStringOrEmptyString(),
+            photoUrl = "",
+            phoneNumber = phone_input.text.toStringOrEmptyString(),
+            statusUrl = "",
+            statusTime = ""
+        ),
+        password = password_input.text.toStringOrEmptyString()
+    )
 
     private fun isAllFieldsValid(): Boolean {
         return name_input_layout.error == null

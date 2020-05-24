@@ -8,6 +8,7 @@ import androidx.lifecycle.Observer
 import com.example.betweenus.R
 import com.example.betweenus.helper.addSimpleTextChangedListener
 import com.example.betweenus.helper.hideSoftInputKeyboard
+import com.example.betweenus.helper.startActivityAndFinish
 import com.example.betweenus.helper.toStringOrEmptyString
 import com.example.betweenus.main.MainActivity
 import com.example.betweenus.user_account.BaseActivity
@@ -37,7 +38,7 @@ class LoginActivity : BaseActivity() {
 
     private fun setupViewModel() {
         if (viewModel.isUserSignedIn()) {
-            goToMainActivity()
+            startActivityAndFinish(MainActivity::class.java)
         }
         viewModel.apply {
             getAuthStatusFlow()
@@ -46,7 +47,7 @@ class LoginActivity : BaseActivity() {
             })
             authDataLiveData.observe(this@LoginActivity, Observer {
                 it.data?.uid?.let {
-                    goToMainActivity()
+                    startActivityAndFinish(MainActivity::class.java)
                 }
             })
         }
@@ -59,11 +60,6 @@ class LoginActivity : BaseActivity() {
                 finish()
             }
         }
-    }
-
-    private fun goToMainActivity() {
-        startActivity(MainActivity.newIntent(this))
-        finish()
     }
 
     private fun setupEmailEditText() {
@@ -117,9 +113,5 @@ class LoginActivity : BaseActivity() {
             password.isNullOrEmpty() -> getString(R.string.password_required)
             else -> null
         }
-    }
-
-    companion object {
-        fun newIntent(context: Context) = Intent(context, LoginActivity::class.java)
     }
 }

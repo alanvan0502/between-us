@@ -2,6 +2,7 @@ package com.example.betweenus.helper
 
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.os.IBinder
 import android.view.inputmethod.InputMethodManager
 
@@ -21,4 +22,10 @@ fun Activity.showSoftInputKeyBoard(showFlag: Int = InputMethodManager.SHOW_IMPLI
     currentFocus?.let {
         inputMethodManager.showSoftInput(it, InputMethodManager.SHOW_IMPLICIT)
     }
+}
+
+fun <T> Activity.startActivityAndFinish(activityClass: Class<T>) {
+    val intent = Intent(this, activityClass)
+    startActivity(intent)
+    finish()
 }

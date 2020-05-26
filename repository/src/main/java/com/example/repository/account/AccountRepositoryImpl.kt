@@ -105,7 +105,7 @@ class AccountRepositoryImpl : AccountRepository {
     override fun observeUser(): Flow<User?> {
         val document = fireStore.collection(CollectionPath.USERS).document(auth.currentUser?.uid!!)
         return callbackFlow {
-            document.addSnapshotListener { snapShot, exception ->
+            val registration = document.addSnapshotListener { snapShot, exception ->
                 val user = try {
                     snapShot?.toObject(User::class.java)
                 } catch (e: Throwable) {
@@ -117,7 +117,9 @@ class AccountRepositoryImpl : AccountRepository {
                     offer(user)
                 }
             }
-            awaitClose { }
+            awaitClose {
+                registration.remove()
+            }
         }
     }
 }

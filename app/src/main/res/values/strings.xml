@@ -19,4 +19,7 @@
     <string name="invalid_email_error">Invalid email</string>
     <string name="password_no_match_error">Password do not match</string>
     <string name="sign_up_button_text">Sign Up</string>
+    <string name="apply_changes">Apply changes</string>
+    <string name="profile">Profile</string>
+    <string name="press_back_again">Press back again to exit</string>
 </resources>

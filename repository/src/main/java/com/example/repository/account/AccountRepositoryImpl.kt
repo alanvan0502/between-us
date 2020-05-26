@@ -1,8 +1,8 @@
 package com.example.repository.account
 
+import com.example.domain.account.data.AuthData
 import com.example.domain.account.data.SignInData
 import com.example.domain.account.data.SignUpData
-import com.example.domain.account.data.AuthData
 import com.example.domain.account.data.User
 import com.example.domain.repository.AccountRepository
 import com.example.repository.account.data.mapper.UserMapper
@@ -99,6 +99,25 @@ class AccountRepositoryImpl : AccountRepository {
             awaitClose {
                 this@observeAuthStatus.removeAuthStateListener(authStateListener)
             }
+        }
+    }
+
+    override fun observeUser(): Flow<User?> {
+        val document = fireStore.collection(CollectionPath.USERS).document(auth.currentUser?.uid!!)
+        return callbackFlow {
+            document.addSnapshotListener { snapShot, exception ->
+                val user = try {
+                    snapShot?.toObject(User::class.java)
+                } catch (e: Throwable) {
+                    null
+                }
+                if (user == null || exception != null) {
+                    close()
+                } else {
+                    offer(user)
+                }
+            }
+            awaitClose { }
         }
     }
 }

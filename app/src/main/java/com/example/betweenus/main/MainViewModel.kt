@@ -17,8 +17,8 @@ class MainViewModel : ViewModel() {
     private val logoutUseCase by inject(LogoutUseCase::class.java)
     private val observeAuthUseCase by inject(ObserveAuthUseCase::class.java)
 
-    private val _userLiveData = MutableLiveData<BUResult<AuthData?>>()
-    val authDataLiveData: LiveData<BUResult<AuthData?>> = _userLiveData
+    private val _authLiveData = MutableLiveData<BUResult<AuthData?>>()
+    val authLiveData: LiveData<BUResult<AuthData?>> = _authLiveData
 
     fun logout() {
         viewModelScope.launch {
@@ -29,7 +29,7 @@ class MainViewModel : ViewModel() {
     fun getAuthStatusFlow() {
         viewModelScope.launch {
             observeAuthUseCase(Any()).collect {
-                _userLiveData.value = it
+                _authLiveData.value = it
             }
         }
     }

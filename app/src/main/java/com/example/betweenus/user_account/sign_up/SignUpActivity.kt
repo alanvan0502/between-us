@@ -1,16 +1,16 @@
 package com.example.betweenus.user_account.sign_up
 
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.util.Patterns
 import androidx.lifecycle.Observer
 import com.example.betweenus.R
-import com.example.betweenus.helper.startActivityAndFinish
+import com.example.betweenus.helper.goToActivity
+import com.example.betweenus.helper.increaseTouchableArea
 import com.example.betweenus.helper.toStringOrEmptyString
 import com.example.betweenus.helper.verify
 import com.example.betweenus.main.MainActivity
 import com.example.betweenus.user_account.BaseActivity
+import com.example.betweenus.user_account.login.LoginActivity
 import com.example.domain.account.data.SignUpData
 import com.example.domain.account.data.User
 import com.example.domain.base.BUResult
@@ -20,10 +20,6 @@ import org.koin.android.viewmodel.ext.android.viewModel
 class SignUpActivity : BaseActivity() {
 
     private val viewModel: SignUpViewModel by viewModel()
-
-    companion object {
-        fun newIntent(context: Context) = Intent(context, SignUpActivity::class.java)
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +31,7 @@ class SignUpActivity : BaseActivity() {
     override fun onResume() {
         super.onResume()
         setupSignUpButton()
+        setupGoToLoginButton()
     }
 
     private fun setupViewModel() {
@@ -42,9 +39,20 @@ class SignUpActivity : BaseActivity() {
             signUpLiveData.observe(this@SignUpActivity, Observer {
                 observeResultStates(it)
                 if (it is BUResult.Success && viewModel.isUserSignedIn()) {
-                    startActivityAndFinish(MainActivity::class.java)
+                    goToActivity(MainActivity::class.java, true)
                 }
             })
+        }
+    }
+
+    override fun onBackPressed() {
+        // do nothing on back pressed
+    }
+
+    private fun setupGoToLoginButton() {
+        go_to_login.increaseTouchableArea()
+        go_to_login.setOnClickListener {
+            goToActivity(LoginActivity::class.java, true)
         }
     }
 

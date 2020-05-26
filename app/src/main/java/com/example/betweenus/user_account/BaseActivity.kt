@@ -1,16 +1,44 @@
 package com.example.betweenus.user_account
 
+import android.os.Bundle
+import android.os.PersistableBundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.betweenus.R
+import com.example.betweenus.common.BackPressManager
 import com.example.domain.base.BUResult
+import org.koin.android.ext.android.inject
 
 abstract class BaseActivity : AppCompatActivity() {
 
     private var progressBar: ViewGroup? = null
     private var container: ViewGroup? = null
+
+    protected open var backPressToExitApp = false
+    private val backPressManager: BackPressManager by inject()
+
+    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
+        super.onCreate(savedInstanceState, persistentState)
+        backPressManager.initialize(this.lifecycle)
+    }
+
+    override fun onBackPressed() {
+        if (!backPressToExitApp) {
+            super.onBackPressed()
+        } else {
+            backPressManager.backPress(
+                firstBackPressAction = {
+                    Toast.makeText(this, getString(R.string.press_back_again), Toast.LENGTH_SHORT)
+                        .show()
+                },
+                secondBackPressAction = {
+                    finishAffinity()
+                }
+            )
+        }
+    }
 
     protected open fun <T> observeResultStates(result: BUResult<T>) {
         when (result) {

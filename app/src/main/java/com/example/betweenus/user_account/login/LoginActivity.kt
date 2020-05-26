@@ -1,15 +1,10 @@
 package com.example.betweenus.user_account.login
 
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.util.Patterns
 import androidx.lifecycle.Observer
 import com.example.betweenus.R
-import com.example.betweenus.helper.addSimpleTextChangedListener
-import com.example.betweenus.helper.hideSoftInputKeyboard
-import com.example.betweenus.helper.startActivityAndFinish
-import com.example.betweenus.helper.toStringOrEmptyString
+import com.example.betweenus.helper.*
 import com.example.betweenus.main.MainActivity
 import com.example.betweenus.user_account.BaseActivity
 import com.example.betweenus.user_account.sign_up.SignUpActivity
@@ -20,6 +15,7 @@ import org.koin.android.viewmodel.ext.android.viewModel
 class LoginActivity : BaseActivity() {
 
     private val viewModel: LoginViewModel by viewModel()
+    override var backPressToExitApp = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,7 +34,7 @@ class LoginActivity : BaseActivity() {
 
     private fun setupViewModel() {
         if (viewModel.isUserSignedIn()) {
-            startActivityAndFinish(MainActivity::class.java)
+            goToActivity(MainActivity::class.java, true)
         }
         viewModel.apply {
             getAuthStatusFlow()
@@ -47,18 +43,16 @@ class LoginActivity : BaseActivity() {
             })
             authDataLiveData.observe(this@LoginActivity, Observer {
                 it.data?.uid?.let {
-                    startActivityAndFinish(MainActivity::class.java)
+                    goToActivity(MainActivity::class.java, true)
                 }
             })
         }
     }
 
     private fun setupGoToSignUpButton() {
+        go_to_sign_up.increaseTouchableArea()
         go_to_sign_up.setOnClickListener {
-            SignUpActivity.newIntent(this).also {
-                startActivity(it)
-                finish()
-            }
+            goToActivity(SignUpActivity::class.java, true)
         }
     }
 

@@ -24,8 +24,10 @@ fun Activity.showSoftInputKeyBoard(showFlag: Int = InputMethodManager.SHOW_IMPLI
     }
 }
 
-fun <T> Activity.startActivityAndFinish(activityClass: Class<T>) {
+fun <T> Activity.goToActivity(activityClass: Class<T>, finishCurrent: Boolean = false) {
     val intent = Intent(this, activityClass)
     startActivity(intent)
-    finish()
+    if (finishCurrent) {
+        finish()
+    }
 }

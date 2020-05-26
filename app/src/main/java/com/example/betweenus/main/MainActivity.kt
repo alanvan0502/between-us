@@ -1,29 +1,25 @@
 package com.example.betweenus.main
 
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.example.betweenus.R
-import com.example.betweenus.helper.startActivityAndFinish
+import com.example.betweenus.helper.goToActivity
+import com.example.betweenus.user_account.BaseActivity
 import com.example.betweenus.user_account.login.LoginActivity
+import com.example.betweenus.user_account.user_profile.UserProfileActivity
 import com.example.domain.base.data
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
 
     private val mainViewModel by viewModel<MainViewModel>()
+    override var backPressToExitApp: Boolean = true
 
     private lateinit var sectionPagerAdapter: SectionPagerAdapter
-
-    companion object {
-        fun newIntent(context: Context) = Intent(context, MainActivity::class.java)
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +42,10 @@ class MainActivity : AppCompatActivity() {
                 mainViewModel.logout()
                 return true
             }
+            R.id.profile -> {
+                this.goToActivity(UserProfileActivity::class.java)
+                return true
+            }
         }
         return super.onOptionsItemSelected(item)
     }
@@ -53,9 +53,9 @@ class MainActivity : AppCompatActivity() {
     private fun setupViewModel() {
         mainViewModel.apply {
             getAuthStatusFlow()
-            authDataLiveData.observe(this@MainActivity, Observer {
+            authLiveData.observe(this@MainActivity, Observer {
                 if (it.data?.uid == null) {
-                    startActivityAndFinish(LoginActivity::class.java)
+                    goToActivity(LoginActivity::class.java)
                 }
             })
         }

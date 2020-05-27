@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.util.Patterns
 import androidx.lifecycle.Observer
 import com.example.betweenus.R
-import com.example.betweenus.helper.goToActivity
+import com.example.betweenus.helper.start
 import com.example.betweenus.helper.increaseTouchableArea
 import com.example.betweenus.helper.toStringOrEmptyString
 import com.example.betweenus.helper.verify
@@ -39,7 +39,7 @@ class SignUpActivity : BaseActivity() {
             signUpLiveData.observe(this@SignUpActivity, Observer {
                 observeResultStates(it)
                 if (it is BUResult.Success && viewModel.isUserSignedIn()) {
-                    goToActivity(MainActivity::class.java, true)
+                    start<MainActivity>(true)
                 }
             })
         }
@@ -52,7 +52,7 @@ class SignUpActivity : BaseActivity() {
     private fun setupGoToLoginButton() {
         go_to_login.increaseTouchableArea()
         go_to_login.setOnClickListener {
-            goToActivity(LoginActivity::class.java, true)
+            start<LoginActivity>(true)
         }
     }
 

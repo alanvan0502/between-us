@@ -5,7 +5,7 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.lifecycle.Observer
 import com.example.betweenus.R
-import com.example.betweenus.helper.goToActivity
+import com.example.betweenus.helper.start
 import com.example.betweenus.user_account.BaseActivity
 import com.example.betweenus.user_account.login.LoginActivity
 import com.example.betweenus.user_account.user_profile.UserProfileActivity
@@ -43,7 +43,7 @@ class MainActivity : BaseActivity() {
                 return true
             }
             R.id.profile -> {
-                this.goToActivity(UserProfileActivity::class.java)
+                this.start<UserProfileActivity>()
                 return true
             }
         }
@@ -55,7 +55,7 @@ class MainActivity : BaseActivity() {
             getAuthStatusFlow()
             authLiveData.observe(this@MainActivity, Observer {
                 if (it.data?.uid == null) {
-                    goToActivity(LoginActivity::class.java)
+                    start<LoginActivity>()
                 }
             })
         }

@@ -34,7 +34,7 @@ class LoginActivity : BaseActivity() {
 
     private fun setupViewModel() {
         if (viewModel.isUserSignedIn()) {
-            goToActivity(MainActivity::class.java, true)
+            start<MainActivity>(true)
         }
         viewModel.apply {
             getAuthStatusFlow()
@@ -43,7 +43,7 @@ class LoginActivity : BaseActivity() {
             })
             authDataLiveData.observe(this@LoginActivity, Observer {
                 it.data?.uid?.let {
-                    goToActivity(MainActivity::class.java, true)
+                    start<MainActivity>(finishCurrent = true)
                 }
             })
         }
@@ -52,7 +52,7 @@ class LoginActivity : BaseActivity() {
     private fun setupGoToSignUpButton() {
         go_to_sign_up.increaseTouchableArea()
         go_to_sign_up.setOnClickListener {
-            goToActivity(SignUpActivity::class.java, true)
+            start<SignUpActivity>(true)
         }
     }
 

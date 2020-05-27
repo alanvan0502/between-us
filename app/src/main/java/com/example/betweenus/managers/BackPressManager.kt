@@ -1,4 +1,4 @@
-package com.example.betweenus.common
+package com.example.betweenus.managers
 
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver

@@ -106,15 +106,15 @@ class AccountRepositoryImpl : AccountRepository {
         val document = fireStore.collection(CollectionPath.USERS).document(auth.currentUser?.uid!!)
         return callbackFlow {
             val registration = document.addSnapshotListener { snapShot, exception ->
-                val user = try {
-                    snapShot?.toObject(User::class.java)
-                } catch (e: Throwable) {
-                    null
+                if (exception != null) {
+                    close(exception)
+                    return@addSnapshotListener
                 }
-                if (user == null || exception != null) {
-                    close()
-                } else {
-                    offer(user)
+                try {
+                    offer(snapShot?.toObject(User::class.java))
+                } catch (e: Throwable) {
+                    close(e)
+                    return@addSnapshotListener
                 }
             }
             awaitClose {

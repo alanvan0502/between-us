@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.betweenus.R
-import com.example.betweenus.common.BackPressManager
+import com.example.betweenus.managers.BackPressManager
 import com.example.domain.base.BUResult
 import org.koin.android.ext.android.inject
 

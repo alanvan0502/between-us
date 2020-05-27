@@ -23,7 +23,17 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                tools:src="@drawable/default_user"
                 android:layout_margin="@dimen/common_16dp"
+                tools:ignore="ContentDescription" />
+
+            <ImageView
+                android:id="@+id/change_profile_pic"
+                android:layout_width="@dimen/camera_icon_size"
+                android:layout_height="@dimen/camera_icon_size"
+                android:src="@drawable/add_photo"
+                app:layout_constraintBottom_toBottomOf="@+id/profile_picture"
+                app:layout_constraintEnd_toEndOf="@+id/profile_picture"
                 tools:ignore="ContentDescription" />
 
             <com.google.android.material.textfield.TextInputLayout

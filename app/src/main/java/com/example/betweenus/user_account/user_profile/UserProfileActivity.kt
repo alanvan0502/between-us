@@ -1,6 +1,8 @@
 package com.example.betweenus.user_account.user_profile
 
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.example.betweenus.R
@@ -18,8 +20,21 @@ class UserProfileActivity : BaseActivity() {
         setContentView(R.layout.activity_user_profile)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
+        change_profile_pic.setOnClickListener {
+            val intent = viewModel.getCameraIntent()
+            startActivityForResult(intent, viewModel.cameraRequestCode)
+        }
         setupViewModel()
         observeUserData()
+        observeCameraError()
+    }
+
+    private fun observeCameraError() {
+        viewModel.cameraError.observe(this, Observer {
+            it?.let {
+                Toast.makeText(this, it.toString(), Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
     private fun observeUserData() {
@@ -37,6 +52,13 @@ class UserProfileActivity : BaseActivity() {
 
     private fun setupViewModel() {
         viewModel.getUserFlow()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == viewModel.cameraRequestCode && resultCode == RESULT_OK) {
+            viewModel.onPictureTaken()
+        }
     }
 
 }

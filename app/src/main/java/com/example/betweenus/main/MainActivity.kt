@@ -1,6 +1,5 @@
 package com.example.betweenus.main
 
-import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.lifecycle.Observer
@@ -18,16 +17,14 @@ class MainActivity : BaseActivity() {
 
     private val mainViewModel by viewModel<MainViewModel>()
     override var backPressToExitApp: Boolean = true
+    override val layoutRes: Int = R.layout.activity_main
 
     private lateinit var sectionPagerAdapter: SectionPagerAdapter
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
+    override fun onCreateActivity() {
+        super.onCreateActivity()
         setupPagerAdapter()
         setupFab()
-
         setupViewModel()
     }
 

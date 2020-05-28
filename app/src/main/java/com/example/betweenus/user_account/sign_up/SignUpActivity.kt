@@ -1,11 +1,10 @@
 package com.example.betweenus.user_account.sign_up
 
-import android.os.Bundle
 import android.util.Patterns
 import androidx.lifecycle.Observer
 import com.example.betweenus.R
-import com.example.betweenus.helper.start
 import com.example.betweenus.helper.increaseTouchableArea
+import com.example.betweenus.helper.start
 import com.example.betweenus.helper.toStringOrEmptyString
 import com.example.betweenus.helper.verify
 import com.example.betweenus.main.MainActivity
@@ -20,11 +19,10 @@ import org.koin.android.viewmodel.ext.android.viewModel
 class SignUpActivity : BaseActivity() {
 
     private val viewModel: SignUpViewModel by viewModel()
+    override val layoutRes: Int = R.layout.activity_signup
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_signup)
-        bindViews()
+    override fun onCreateActivity() {
+        super.onCreateActivity()
         setupViewModel()
     }
 
@@ -69,24 +67,19 @@ class SignUpActivity : BaseActivity() {
         user = User(
             name = name_input.text.toStringOrEmptyString(),
             email = email_input.text.toStringOrEmptyString(),
-            photoUrl = "",
-            phoneNumber = phone_input.text.toStringOrEmptyString(),
-            statusUrl = "",
-            statusTime = ""
+            photoUrl = ""
         ),
         password = password_input.text.toStringOrEmptyString()
     )
 
     private fun isAllFieldsValid(): Boolean {
         return name_input_layout.error == null
-                && phone_input_layout.error == null
                 && email_input_layout.error == null
                 && password_input_layout.error == null
     }
 
     private fun verifyAllFields() {
         verifyName()
-        verifyPhone()
         verifyPassword()
         verifyEmail()
     }
@@ -94,11 +87,6 @@ class SignUpActivity : BaseActivity() {
     private fun verifyName() = name_input_layout.verify(
         errorPredicate = name_input.text.toStringOrEmptyString().isEmpty(),
         errorMessage = getString(R.string.empty_name_error)
-    )
-
-    private fun verifyPhone() = phone_input_layout.verify(
-        errorPredicate = phone_input.text.toStringOrEmptyString().isEmpty(),
-        errorMessage = getString(R.string.empty_phone_error)
     )
 
     private fun verifyEmail() = email_input_layout.verify(

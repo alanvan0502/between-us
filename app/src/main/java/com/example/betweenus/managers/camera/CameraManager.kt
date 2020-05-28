@@ -3,12 +3,13 @@ package com.example.betweenus.managers.camera
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Environment
 import android.os.FileUtils
 import android.provider.MediaStore
 import androidx.core.content.FileProvider
-import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.koin.java.KoinJavaComponent.inject
@@ -21,7 +22,9 @@ import java.util.*
 @Suppress("DEPRECATION")
 class CameraManager {
     private val context by inject(Context::class.java)
-    private var currentPhotoPath: String? = null
+
+    var currentPhotoPath: String? = null
+        private set
 
     companion object {
         const val REQUEST_TAKE_PHOTO = 1
@@ -48,7 +51,7 @@ class CameraManager {
     }
 
     @Throws(IOException::class)
-    fun createImageFile(): File? {
+    private fun createImageFile(): File? {
         val timeStamp =
             SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
         val storageDir =
@@ -59,6 +62,13 @@ class CameraManager {
             storageDir
         ).apply {
             currentPhotoPath = absolutePath
+        }
+    }
+
+    suspend fun getTakenPic(): Bitmap? {
+        return withContext(Dispatchers.IO) {
+            currentPhotoPath ?: return@withContext null
+            return@withContext BitmapFactory.decodeFile(currentPhotoPath)
         }
     }
 

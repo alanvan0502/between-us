@@ -2,14 +2,17 @@ package com.example.repository.account
 
 import com.example.domain.account.data.AuthData
 import com.example.domain.account.data.SignInData
-import com.example.domain.account.data.SignUpData
 import com.example.domain.account.data.User
 import com.example.domain.repository.AccountRepository
 import com.example.repository.account.data.mapper.UserMapper
 import com.example.repository.helper.CollectionPath
 import com.example.repository.helper.collection
+import com.example.repository.helper.profilePicStorageRef
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageException
+import com.google.firebase.storage.StorageException.ERROR_OBJECT_NOT_FOUND
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.ProducerScope
 import kotlinx.coroutines.channels.awaitClose
@@ -17,6 +20,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.suspendCancellableCoroutine
 import org.koin.java.KoinJavaComponent.inject
+import java.io.File
+import java.io.FileInputStream
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
@@ -25,18 +30,64 @@ class AccountRepositoryImpl : AccountRepository {
 
     private val auth by inject(FirebaseAuth::class.java)
     private val fireStore by inject(FirebaseFirestore::class.java)
+    private val storage by inject(FirebaseStorage::class.java)
 
     override fun isUserSignedIn(): Boolean {
         return auth.currentUser != null
     }
 
-    override suspend fun signUp(data: SignUpData) {
-        val email = data.user.email ?: return
-        createUser(email, data.password)
-        saveUserToFireStore(data.user)
+    override suspend fun storageUploadProfilePic(pictureAbsPath: String) {
+        return suspendCancellableCoroutine { cont ->
+            if (auth.currentUser?.uid != null) {
+                val storageRef = storage.profilePicStorageRef(auth.currentUser?.uid!!)
+                val uploadTask = storageRef.putStream(FileInputStream(File(pictureAbsPath)))
+                uploadTask.addOnSuccessListener {
+                    cont.resume(Unit)
+                }.addOnFailureListener {
+                    cont.resumeWithException(it)
+                }
+            } else {
+                cont.resume(Unit)
+            }
+        }
     }
 
-    private suspend fun saveUserToFireStore(user: User) {
+    override suspend fun storageGetProfilePicUrl(): String? {
+        return suspendCancellableCoroutine { cont ->
+            if (auth.currentUser?.uid != null) {
+                val storageRef = storage.profilePicStorageRef(auth.currentUser?.uid!!)
+                storageRef.downloadUrl.addOnSuccessListener {
+                    cont.resume(it.toString())
+                }.addOnFailureListener {
+                    cont.resumeWithException(it)
+                }
+            } else {
+                cont.resume(null)
+            }
+        }
+    }
+
+    override suspend fun storageDeleteProfilePic() {
+        return suspendCancellableCoroutine { cont ->
+            if (auth.currentUser?.uid != null) {
+                val storageRef = storage.profilePicStorageRef(auth.currentUser?.uid!!)
+                storageRef.delete().addOnSuccessListener {
+                    cont.resume(Unit)
+                }.addOnFailureListener { exception ->
+                    val errorCode = (exception as? StorageException)?.errorCode
+                    if (errorCode == ERROR_OBJECT_NOT_FOUND) {
+                        cont.resume(Unit)
+                    } else {
+                        cont.resumeWithException(exception)
+                    }
+                }
+            } else {
+                cont.resume(Unit)
+            }
+        }
+    }
+
+    override suspend fun fireStoreSaveUser(user: User) {
         return suspendCancellableCoroutine { cont ->
             if (auth.currentUser?.uid != null) {
                 fireStore.collection(CollectionPath.USERS)
@@ -53,13 +104,38 @@ class AccountRepositoryImpl : AccountRepository {
         }
     }
 
-    private suspend fun createUser(email: String, password: String) {
+    override suspend fun authCreateUser(email: String, password: String) {
         return suspendCancellableCoroutine { cont ->
             auth.createUserWithEmailAndPassword(
                 email, password
             ).addOnSuccessListener {
                 cont.resume(Unit)
             }.addOnFailureListener {
+                cont.resumeWithException(it)
+            }
+        }
+    }
+
+    override suspend fun authUpdateUser(email: String?, password: String?) {
+        email?.let { updateEmail(it) }
+        password?.let { updatePassword(it) }
+    }
+
+    private suspend fun updatePassword(password: String) {
+        return suspendCancellableCoroutine { cont ->
+            auth.currentUser?.updatePassword(password)?.addOnSuccessListener {
+                cont.resume(Unit)
+            }?.addOnFailureListener {
+                cont.resumeWithException(it)
+            }
+        }
+    }
+
+    private suspend fun updateEmail(email: String) {
+        return suspendCancellableCoroutine { cont ->
+            auth.currentUser?.updateEmail(email)?.addOnSuccessListener {
+                cont.resume(Unit)
+            }?.addOnFailureListener {
                 cont.resumeWithException(it)
             }
         }
@@ -103,7 +179,8 @@ class AccountRepositoryImpl : AccountRepository {
     }
 
     override fun observeUser(): Flow<User?> {
-        val document = fireStore.collection(CollectionPath.USERS).document(auth.currentUser?.uid!!)
+        val document =
+            fireStore.collection(CollectionPath.USERS).document(auth.currentUser?.uid!!)
         return callbackFlow {
             val registration = document.addSnapshotListener { snapShot, exception ->
                 if (exception != null) {

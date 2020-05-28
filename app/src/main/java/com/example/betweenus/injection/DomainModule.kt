@@ -12,5 +12,7 @@ object DomainModule {
         factory { LogoutUseCase(Dispatchers.IO, get()) }
         factory { SignUpUseCase(Dispatchers.IO, get()) }
         factory { ObserveUserUseCase(Dispatchers.Main, get()) }
+        factory { UploadProfilePicUseCase(Dispatchers.IO, get()) }
+        factory { UpdateUserUseCase(Dispatchers.IO, get()) }
     }
 }

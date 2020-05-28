@@ -1,6 +1,5 @@
 package com.example.betweenus.user_account.login
 
-import android.os.Bundle
 import android.util.Patterns
 import androidx.lifecycle.Observer
 import com.example.betweenus.R
@@ -17,10 +16,10 @@ class LoginActivity : BaseActivity() {
     private val viewModel: LoginViewModel by viewModel()
     override var backPressToExitApp = true
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
-        bindViews()
+    override val layoutRes = R.layout.activity_login
+
+    override fun onCreateActivity() {
+        super.onCreateActivity()
         setupViewModel()
     }
 

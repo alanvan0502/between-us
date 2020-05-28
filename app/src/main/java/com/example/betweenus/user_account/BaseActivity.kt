@@ -5,6 +5,8 @@ import android.os.PersistableBundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.annotation.CallSuper
+import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import com.example.betweenus.R
 import com.example.betweenus.managers.BackPressManager
@@ -19,9 +21,18 @@ abstract class BaseActivity : AppCompatActivity() {
     protected open var backPressToExitApp = false
     private val backPressManager: BackPressManager by inject()
 
-    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-        super.onCreate(savedInstanceState, persistentState)
+    abstract val layoutRes: Int
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        onCreateActivity()
+    }
+
+    @CallSuper
+    protected open fun onCreateActivity() {
+        setContentView(layoutRes)
         backPressManager.initialize(this.lifecycle)
+        bindViews()
     }
 
     override fun onBackPressed() {

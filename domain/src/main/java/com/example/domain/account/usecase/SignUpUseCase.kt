@@ -11,6 +11,8 @@ class SignUpUseCase(
 ): SuspendUseCase<SignUpData, Unit>(coroutineDispatcher) {
 
     override suspend fun execute(params: SignUpData) {
-        accountRepository.signUp(params)
+        val email = params.user.email ?: return
+        accountRepository.authCreateUser(email, params.password)
+        accountRepository.fireStoreSaveUser(params.user)
     }
 }

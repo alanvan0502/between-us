@@ -1,6 +1,7 @@
 package com.example.betweenus.user_account.login
 
 import android.util.Patterns
+import android.widget.TextView
 import androidx.lifecycle.Observer
 import com.example.betweenus.R
 import com.example.betweenus.helper.*
@@ -8,7 +9,9 @@ import com.example.betweenus.main.MainActivity
 import com.example.betweenus.user_account.BaseActivity
 import com.example.betweenus.user_account.sign_up.SignUpActivity
 import com.example.domain.base.data
-import kotlinx.android.synthetic.main.activity_login.*
+import com.google.android.material.button.MaterialButton
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class LoginActivity : BaseActivity() {
@@ -16,10 +19,25 @@ class LoginActivity : BaseActivity() {
     private val viewModel: LoginViewModel by viewModel()
     override var backPressToExitApp = true
 
+    private lateinit var goToSignUp: TextView
+    private lateinit var emailInput: TextInputEditText
+    private lateinit var passwordInput: TextInputEditText
+    private lateinit var passwordInputLayout: TextInputLayout
+    private lateinit var emailInputLayout: TextInputLayout
+    private lateinit var loginButton: MaterialButton
+
     override val layoutRes = R.layout.activity_login
 
     override fun onCreateActivity() {
         super.onCreateActivity()
+
+        goToSignUp = findViewById(R.id.go_to_sign_up)
+        emailInput = findViewById(R.id.email_input)
+        passwordInput = findViewById(R.id.password_input)
+        passwordInputLayout = findViewById(R.id.password_input_layout)
+        emailInputLayout = findViewById(R.id.email_input_layout)
+        loginButton = findViewById(R.id.login_button)
+
         setupViewModel()
     }
 
@@ -49,40 +67,40 @@ class LoginActivity : BaseActivity() {
     }
 
     private fun setupGoToSignUpButton() {
-        go_to_sign_up.increaseTouchableArea()
-        go_to_sign_up.setOnClickListener {
+        goToSignUp.increaseTouchableArea()
+        goToSignUp.setOnClickListener {
             start<SignUpActivity>(true)
         }
     }
 
     private fun setupEmailEditText() {
-        email_input.addSimpleTextChangedListener {
+        emailInput.addSimpleTextChangedListener {
             getEmailErrorMessage(it)?.let { error ->
-                email_input_layout.error = error
+                emailInputLayout.error = error
                 return@addSimpleTextChangedListener
             }
-            email_input_layout.error = null
+            emailInputLayout.error = null
         }
     }
 
     private fun setupPasswordEditText() {
-        password_input.addSimpleTextChangedListener {
+        passwordInput.addSimpleTextChangedListener {
             getPasswordErrorMessage(it)?.let { error ->
-                password_input_layout.error = error
+                passwordInputLayout.error = error
                 return@addSimpleTextChangedListener
             }
-            password_input_layout.error = null
+            passwordInputLayout.error = null
         }
     }
 
     private fun setupLoginButton() {
-        login_button.setOnClickListener {
+        loginButton.setOnClickListener {
             if (allFieldsValidated()) {
                 viewModel.signIn(
-                    email = email_input.text.toStringOrEmptyString(),
-                    password = password_input.text.toStringOrEmptyString()
+                    email = emailInput.text.toStringOrEmptyString(),
+                    password = passwordInput.text.toStringOrEmptyString()
                 )
-                this.hideSoftInputKeyboard(password_input.windowToken)
+                this.hideSoftInputKeyboard(passwordInput.windowToken)
             } else {
                 showError(getString(R.string.check_email_password))
             }
@@ -90,7 +108,7 @@ class LoginActivity : BaseActivity() {
     }
 
     private fun allFieldsValidated(): Boolean {
-        return email_input_layout.error == null && password_input_layout.error == null
+        return emailInputLayout.error == null && passwordInputLayout.error == null
     }
 
     private fun getEmailErrorMessage(email: CharSequence?): String? {

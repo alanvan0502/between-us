@@ -1,12 +1,10 @@
 package com.example.betweenus.user_account
 
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.CallSuper
-import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import com.example.betweenus.R
 import com.example.betweenus.managers.BackPressManager

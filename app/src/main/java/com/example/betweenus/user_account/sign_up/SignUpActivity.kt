@@ -1,6 +1,7 @@
 package com.example.betweenus.user_account.sign_up
 
 import android.util.Patterns
+import android.widget.TextView
 import androidx.lifecycle.Observer
 import com.example.betweenus.R
 import com.example.betweenus.helper.increaseTouchableArea
@@ -13,7 +14,9 @@ import com.example.betweenus.user_account.login.LoginActivity
 import com.example.domain.account.data.SignUpData
 import com.example.domain.account.data.User
 import com.example.domain.base.BUResult
-import kotlinx.android.synthetic.main.activity_signup.*
+import com.google.android.material.button.MaterialButton
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class SignUpActivity : BaseActivity() {
@@ -21,8 +24,29 @@ class SignUpActivity : BaseActivity() {
     private val viewModel: SignUpViewModel by viewModel()
     override val layoutRes: Int = R.layout.activity_signup
 
+    private lateinit var goToLogin: TextView
+    private lateinit var signUpButton: MaterialButton
+    private lateinit var nameInput: TextInputEditText
+    private lateinit var emailInput: TextInputEditText
+    private lateinit var confirmPasswordInput: TextInputEditText
+    private lateinit var passwordInput: TextInputEditText
+    private lateinit var nameInputLayout: TextInputLayout
+    private lateinit var passwordInputLayout: TextInputLayout
+    private lateinit var emailInputLayout: TextInputLayout
+
     override fun onCreateActivity() {
         super.onCreateActivity()
+
+        goToLogin = findViewById(R.id.go_to_login)
+        signUpButton = findViewById(R.id.sign_up_button)
+        nameInput = findViewById(R.id.name_input)
+        emailInput = findViewById(R.id.email_input)
+        confirmPasswordInput = findViewById(R.id.confirm_password_input)
+        passwordInput = findViewById(R.id.password_input)
+        nameInputLayout = findViewById(R.id.name_input_layout)
+        passwordInputLayout = findViewById(R.id.password_input_layout)
+        emailInputLayout = findViewById(R.id.email_input_layout)
+
         setupViewModel()
     }
 
@@ -48,14 +72,14 @@ class SignUpActivity : BaseActivity() {
     }
 
     private fun setupGoToLoginButton() {
-        go_to_login.increaseTouchableArea()
-        go_to_login.setOnClickListener {
+        goToLogin.increaseTouchableArea()
+        goToLogin.setOnClickListener {
             start<LoginActivity>(true)
         }
     }
 
     private fun setupSignUpButton() {
-        sign_up_button.setOnClickListener {
+        signUpButton.setOnClickListener {
             verifyAllFields()
             if (isAllFieldsValid()) {
                 viewModel.signUp(data = getSignUpData())
@@ -65,17 +89,17 @@ class SignUpActivity : BaseActivity() {
 
     private fun getSignUpData() = SignUpData(
         user = User(
-            name = name_input.text.toStringOrEmptyString(),
-            email = email_input.text.toStringOrEmptyString(),
+            name = nameInput.text.toStringOrEmptyString(),
+            email = emailInput.text.toStringOrEmptyString(),
             photoUrl = ""
         ),
-        password = password_input.text.toStringOrEmptyString()
+        password = passwordInput.text.toStringOrEmptyString()
     )
 
     private fun isAllFieldsValid(): Boolean {
-        return name_input_layout.error == null
-                && email_input_layout.error == null
-                && password_input_layout.error == null
+        return nameInputLayout.error == null
+                && emailInputLayout.error == null
+                && passwordInputLayout.error == null
     }
 
     private fun verifyAllFields() {
@@ -84,20 +108,20 @@ class SignUpActivity : BaseActivity() {
         verifyEmail()
     }
 
-    private fun verifyName() = name_input_layout.verify(
-        errorPredicate = name_input.text.toStringOrEmptyString().isEmpty(),
+    private fun verifyName() = nameInputLayout.verify(
+        errorPredicate = nameInput.text.toStringOrEmptyString().isEmpty(),
         errorMessage = getString(R.string.empty_name_error)
     )
 
-    private fun verifyEmail() = email_input_layout.verify(
-        errorPredicate = !Patterns.EMAIL_ADDRESS.matcher(email_input.text.toStringOrEmptyString())
+    private fun verifyEmail() = emailInputLayout.verify(
+        errorPredicate = !Patterns.EMAIL_ADDRESS.matcher(emailInput.text.toStringOrEmptyString())
             .matches(),
         errorMessage = getString(R.string.invalid_email_error)
     )
 
-    private fun verifyPassword() = password_input_layout.verify(
-        errorPredicate = password_input.text.toStringOrEmptyString().isEmpty() ||
-                password_input.text.toStringOrEmptyString() != confirm_password_input.text.toStringOrEmptyString(),
+    private fun verifyPassword() = passwordInputLayout.verify(
+        errorPredicate = passwordInput.text.toStringOrEmptyString().isEmpty() ||
+                passwordInput.text.toStringOrEmptyString() != confirmPasswordInput.text.toStringOrEmptyString(),
         errorMessage = getString(R.string.password_no_match_error)
     )
 }

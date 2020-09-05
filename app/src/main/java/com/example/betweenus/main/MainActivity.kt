@@ -2,15 +2,17 @@ package com.example.betweenus.main
 
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Observer
+import androidx.viewpager2.widget.ViewPager2
 import com.example.betweenus.R
 import com.example.betweenus.helper.start
 import com.example.betweenus.user_account.BaseActivity
 import com.example.betweenus.user_account.login.LoginActivity
 import com.example.betweenus.user_account.user_profile.UserProfileActivity
 import com.example.domain.base.data
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class MainActivity : BaseActivity() {
@@ -21,8 +23,17 @@ class MainActivity : BaseActivity() {
 
     private lateinit var sectionPagerAdapter: SectionPagerAdapter
 
+    private lateinit var toolbar: Toolbar
+    private lateinit var fab: FloatingActionButton
+    private lateinit var viewPager: ViewPager2
+
     override fun onCreateActivity() {
         super.onCreateActivity()
+
+        toolbar = findViewById(R.id.toolbar)
+        fab = findViewById(R.id.fab)
+        viewPager = findViewById(R.id.container)
+
         setupPagerAdapter()
         setupFab()
         setupViewModel()
@@ -61,7 +72,7 @@ class MainActivity : BaseActivity() {
     private fun setupPagerAdapter() {
         setSupportActionBar(toolbar)
         sectionPagerAdapter = SectionPagerAdapter(this)
-        container.adapter = sectionPagerAdapter
+        viewPager.adapter = sectionPagerAdapter
     }
 
 

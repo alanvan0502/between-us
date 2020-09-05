@@ -2,9 +2,9 @@ package com.example.betweenus.main
 
 import android.os.Bundle
 import android.view.*
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.betweenus.R
-import kotlinx.android.synthetic.main.fragment_main.*
 
 class PlaceholderFragment : Fragment() {
 
@@ -20,6 +20,8 @@ class PlaceholderFragment : Fragment() {
         }
     }
 
+    private lateinit var sectionLabel: TextView
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -30,6 +32,7 @@ class PlaceholderFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        section_label.text = "Hello world from section ${arguments?.getInt(ARG_SECTION_NUMBER)}"
+        sectionLabel = view.findViewById(R.id.section_label)
+        sectionLabel.text = "Hello world from section ${arguments?.getInt(ARG_SECTION_NUMBER)}"
     }
 }

@@ -64,7 +64,7 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/login_button"
                 style="@style/StandardButton"
                 android:layout_width="0dp"

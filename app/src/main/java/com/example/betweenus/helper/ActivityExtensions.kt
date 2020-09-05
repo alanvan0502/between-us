@@ -17,13 +17,6 @@ fun Activity.hideSoftInputKeyboard(windowToken: IBinder? = null, flags: Int = 0)
     }
 }
 
-fun Activity.showSoftInputKeyBoard(showFlag: Int = InputMethodManager.SHOW_IMPLICIT) {
-    val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-    currentFocus?.let {
-        inputMethodManager.showSoftInput(it, InputMethodManager.SHOW_IMPLICIT)
-    }
-}
-
 inline fun <reified T> Activity.start(finishCurrent: Boolean = false) {
     val intent = Intent(this, T::class.java)
     startActivity(intent)

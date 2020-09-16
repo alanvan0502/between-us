@@ -3,7 +3,8 @@ package com.example.betweenus.managers
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
-import java.util.*
+import java.util.Timer
+import java.util.TimerTask
 
 class BackPressManager : LifecycleObserver {
 
@@ -31,16 +32,18 @@ class BackPressManager : LifecycleObserver {
         if (backPressCount == 0) {
             backPressCount += 1
             val timer = Timer()
-            timer.schedule(object : TimerTask() {
-                override fun run() {
-                    backPressCount = 0
-                }
-            }, DURATION)
+            timer.schedule(
+                object : TimerTask() {
+                    override fun run() {
+                        backPressCount = 0
+                    }
+                },
+                DURATION
+            )
             firstBackPressAction()
         } else {
             backPressCount = 0
             secondBackPressAction()
         }
     }
-
 }

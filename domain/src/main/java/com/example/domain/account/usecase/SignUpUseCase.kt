@@ -8,7 +8,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 class SignUpUseCase(
     coroutineDispatcher: CoroutineDispatcher,
     private val accountRepository: AccountRepository
-): SuspendUseCase<SignUpData, Unit>(coroutineDispatcher) {
+) : SuspendUseCase<SignUpData, Unit>(coroutineDispatcher) {
 
     override suspend fun execute(params: SignUpData) {
         val email = params.user.email ?: return

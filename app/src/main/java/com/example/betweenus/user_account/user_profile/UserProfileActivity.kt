@@ -48,9 +48,12 @@ class UserProfileActivity : BaseActivity() {
     }
 
     private fun setupApplyChangesButton() {
-        viewModel.applyChangesLiveData.observe(this, Observer {
-            observeResultStates(it)
-        })
+        viewModel.applyChangesLiveData.observe(
+            this,
+            Observer {
+                observeResultStates(it)
+            }
+        )
         applyChanges.setOnClickListener {
             viewModel.applyChanges(
                 name = nameInput.text.toStringOrEmptyString(),
@@ -60,28 +63,37 @@ class UserProfileActivity : BaseActivity() {
     }
 
     private fun observeCamera() {
-        viewModel.cameraError.observe(this, Observer {
-            it?.let {
-                Toast.makeText(this, it.toString(), Toast.LENGTH_SHORT).show()
+        viewModel.cameraError.observe(
+            this,
+            Observer {
+                it?.let {
+                    Toast.makeText(this, it.toString(), Toast.LENGTH_SHORT).show()
+                }
             }
-        })
-        viewModel.takenPicture.observe(this, Observer {
-            val bitmap = it ?: return@Observer
-            profilePicture.loadPictureCircleCrop(this, bitmap, R.drawable.default_user)
-        })
+        )
+        viewModel.takenPicture.observe(
+            this,
+            Observer {
+                val bitmap = it ?: return@Observer
+                profilePicture.loadPictureCircleCrop(this, bitmap, R.drawable.default_user)
+            }
+        )
     }
 
     private fun getUserFlow() {
         viewModel.getUserFlow()
-        viewModel.userLiveData.observe(this, Observer { userResult ->
-            userResult.data?.let {
-                nameInput.setText(it.name)
-                emailInput.setText(it.email)
-                it.photoUrl?.let { url ->
-                    profilePicture.loadPictureCircleCrop(this, url, R.drawable.default_user)
+        viewModel.userLiveData.observe(
+            this,
+            Observer { userResult ->
+                userResult.data?.let {
+                    nameInput.setText(it.name)
+                    emailInput.setText(it.email)
+                    it.photoUrl?.let { url ->
+                        profilePicture.loadPictureCircleCrop(this, url, R.drawable.default_user)
+                    }
                 }
             }
-        })
+        )
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -90,5 +102,4 @@ class UserProfileActivity : BaseActivity() {
             viewModel.onPictureTaken()
         }
     }
-
 }

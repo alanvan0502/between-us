@@ -3,6 +3,7 @@ import com.alanvan.buildsrc.Libs
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply from: '../tests.gradle'
 
 android {
     compileSdkVersion 30
@@ -46,16 +47,16 @@ dependencies {
     api Libs.Koin.scope
     api Libs.Koin.viewmodel
 
-    // Firebase
     implementation Libs.Google.Analytics.analytics
     implementation Libs.Google.Auth.auth
     implementation Libs.Google.FireStore.firestore
     implementation Libs.Google.Storage.storage
 
+    ktlint Libs.KtLint.ktlint
+
     // Coroutine
     implementation Libs.Coroutines.core
     implementation Libs.Coroutines.android
 
-    // Test
     androidTestImplementation Libs.junit
 }

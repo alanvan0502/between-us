@@ -3,7 +3,7 @@ package com.example.repository.helper
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 
-//TODO: reconsider naming
+// TODO: reconsider naming
 enum class CollectionPath(val value: String) {
     USERS("Users"),
     EMAIL("email"),

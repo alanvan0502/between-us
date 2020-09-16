@@ -6,6 +6,8 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'com.google.gms.google-services'
 
+apply from: '../tests.gradle'
+
 android {
     compileSdkVersion 30
     buildToolsVersion "29.0.3"
@@ -86,4 +88,6 @@ dependencies {
     androidTestImplementation Libs.AndroidX.Test.rules
     androidTestImplementation Libs.AndroidX.Test.Ext.junit
     androidTestImplementation Libs.AndroidX.Compose.uiTest
+
+    ktlint Libs.KtLint.ktlint
 }

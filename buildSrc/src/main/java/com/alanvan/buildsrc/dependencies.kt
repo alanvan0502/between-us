@@ -48,6 +48,11 @@ object Libs {
         const val test = "org.jetbrains.kotlinx:kotlinx-coroutines-test:$version"
     }
 
+    object KtLint {
+        private const val version = "0.39.0"
+        const val ktlint = "com.pinterest:ktlint:$version"
+    }
+
     object Koin {
         private const val version = "2.2.0-alpha-1"
 

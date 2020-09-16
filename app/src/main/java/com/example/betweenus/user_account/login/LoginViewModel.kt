@@ -13,7 +13,6 @@ import com.example.domain.repository.AccountRepository
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.koin.java.KoinJavaComponent.inject
-import java.util.*
 
 class LoginViewModel : ViewModel() {
     private val accountRepository by inject(AccountRepository::class.java)
@@ -25,7 +24,7 @@ class LoginViewModel : ViewModel() {
     val authDataLiveData: LiveData<BUResult<AuthData?>> = _userLiveData
 
     private val signInWithEmailAndPasswordUseCase
-            by inject(SignInWithEmailAndPasswordUseCase::class.java)
+    by inject(SignInWithEmailAndPasswordUseCase::class.java)
 
     private val observeAuthUseCase by inject(ObserveAuthUseCase::class.java)
 

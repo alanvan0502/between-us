@@ -13,5 +13,4 @@ class SectionPagerAdapter(activity: AppCompatActivity) : FragmentStateAdapter(ac
     override fun createFragment(position: Int): Fragment {
         return PlaceholderFragment.newInstance(position + 1)
     }
-
 }

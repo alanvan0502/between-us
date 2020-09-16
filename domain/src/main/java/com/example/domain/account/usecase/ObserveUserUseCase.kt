@@ -18,5 +18,4 @@ class ObserveUserUseCase(
             BUResult.Success(it)
         }
     }
-
 }

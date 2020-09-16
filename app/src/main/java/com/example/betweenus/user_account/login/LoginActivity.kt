@@ -4,7 +4,11 @@ import android.util.Patterns
 import android.widget.TextView
 import androidx.lifecycle.Observer
 import com.example.betweenus.R
-import com.example.betweenus.helper.*
+import com.example.betweenus.helper.start
+import com.example.betweenus.helper.increaseTouchableArea
+import com.example.betweenus.helper.addSimpleTextChangedListener
+import com.example.betweenus.helper.toStringOrEmptyString
+import com.example.betweenus.helper.hideSoftInputKeyboard
 import com.example.betweenus.main.MainActivity
 import com.example.betweenus.user_account.BaseActivity
 import com.example.betweenus.user_account.sign_up.SignUpActivity
@@ -55,14 +59,20 @@ class LoginActivity : BaseActivity() {
         }
         viewModel.apply {
             getAuthStatusFlow()
-            signInLiveData.observe(this@LoginActivity, Observer {
-                observeResultStates(it)
-            })
-            authDataLiveData.observe(this@LoginActivity, Observer {
-                it.data?.uid?.let {
-                    start<MainActivity>(finishCurrent = true)
+            signInLiveData.observe(
+                this@LoginActivity,
+                Observer {
+                    observeResultStates(it)
                 }
-            })
+            )
+            authDataLiveData.observe(
+                this@LoginActivity,
+                Observer {
+                    it.data?.uid?.let {
+                        start<MainActivity>(finishCurrent = true)
+                    }
+                }
+            )
         }
     }
 

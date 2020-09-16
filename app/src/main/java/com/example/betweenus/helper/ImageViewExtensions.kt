@@ -35,7 +35,6 @@ fun ImageView.loadImage(
     }
 
     return this
-
 }
 
 fun ImageView.loadImage(
@@ -63,7 +62,6 @@ fun ImageView.loadImage(
     }
 
     return this
-
 }
 
 fun ImageView.loadPictureCircleCrop(

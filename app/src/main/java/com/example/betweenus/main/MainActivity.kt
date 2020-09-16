@@ -61,11 +61,14 @@ class MainActivity : BaseActivity() {
     private fun setupViewModel() {
         mainViewModel.apply {
             getAuthStatusFlow()
-            authLiveData.observe(this@MainActivity, Observer {
-                if (it.data?.uid == null) {
-                    start<LoginActivity>()
+            authLiveData.observe(
+                this@MainActivity,
+                Observer {
+                    if (it.data?.uid == null) {
+                        start<LoginActivity>()
+                    }
                 }
-            })
+            )
         }
     }
 
@@ -74,7 +77,6 @@ class MainActivity : BaseActivity() {
         sectionPagerAdapter = SectionPagerAdapter(this)
         viewPager.adapter = sectionPagerAdapter
     }
-
 
     private fun setupFab() {
         fab.setOnClickListener {

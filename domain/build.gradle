@@ -2,11 +2,13 @@ import com.alanvan.buildsrc.Libs
 
 apply plugin: 'java-library'
 apply plugin: 'kotlin'
+apply from: '../tests.gradle'
 
 dependencies {
     implementation fileTree(dir: "libs", include: ['*.jar'])
     implementation Libs.Kotlin.stdlib
     implementation Libs.Coroutines.core
+    ktlint Libs.KtLint.ktlint
 }
 
 sourceCompatibility = "1.8"

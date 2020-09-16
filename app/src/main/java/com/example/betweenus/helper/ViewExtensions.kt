@@ -23,7 +23,6 @@ val View.isActivityDestroyed get() = context.activity?.isDestroyed != false
 
 fun View.removeOnClickListener() {
     setOnClickListener {
-
     }
     isClickable = false
 }

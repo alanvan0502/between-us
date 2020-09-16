@@ -13,5 +13,4 @@ object Module {
         single { Firebase.firestore }
         single { Firebase.storage }
     }
-
 }

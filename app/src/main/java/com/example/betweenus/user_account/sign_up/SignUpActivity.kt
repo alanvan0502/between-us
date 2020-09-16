@@ -58,12 +58,15 @@ class SignUpActivity : BaseActivity() {
 
     private fun setupViewModel() {
         viewModel.apply {
-            signUpLiveData.observe(this@SignUpActivity, Observer {
-                observeResultStates(it)
-                if (it is BUResult.Success && viewModel.isUserSignedIn()) {
-                    start<MainActivity>(true)
+            signUpLiveData.observe(
+                this@SignUpActivity,
+                Observer {
+                    observeResultStates(it)
+                    if (it is BUResult.Success && viewModel.isUserSignedIn()) {
+                        start<MainActivity>(true)
+                    }
                 }
-            })
+            )
         }
     }
 
@@ -97,9 +100,9 @@ class SignUpActivity : BaseActivity() {
     )
 
     private fun isAllFieldsValid(): Boolean {
-        return nameInputLayout.error == null
-                && emailInputLayout.error == null
-                && passwordInputLayout.error == null
+        return nameInputLayout.error == null &&
+            emailInputLayout.error == null &&
+            passwordInputLayout.error == null
     }
 
     private fun verifyAllFields() {
@@ -121,7 +124,7 @@ class SignUpActivity : BaseActivity() {
 
     private fun verifyPassword() = passwordInputLayout.verify(
         errorPredicate = passwordInput.text.toStringOrEmptyString().isEmpty() ||
-                passwordInput.text.toStringOrEmptyString() != confirmPasswordInput.text.toStringOrEmptyString(),
+            passwordInput.text.toStringOrEmptyString() != confirmPasswordInput.text.toStringOrEmptyString(),
         errorMessage = getString(R.string.password_no_match_error)
     )
 }

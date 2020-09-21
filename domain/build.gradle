@@ -4,6 +4,15 @@ apply plugin: 'java-library'
 apply plugin: 'kotlin'
 apply from: '../tests.gradle'
 
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile) {
+  kotlinOptions {
+    freeCompilerArgs += [
+      "-Xuse-experimental=kotlinx.coroutines.ExperimentalCoroutinesApi",
+      "-Xuse-experimental=kotlinx.coroutines.FlowPreview"
+    ]
+  }
+}
+
 dependencies {
     implementation fileTree(dir: "libs", include: ['*.jar'])
     implementation Libs.Kotlin.stdlib

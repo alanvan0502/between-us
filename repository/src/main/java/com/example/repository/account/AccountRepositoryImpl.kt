@@ -25,7 +25,6 @@ import java.io.FileInputStream
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
-@ExperimentalCoroutinesApi
 class AccountRepositoryImpl : AccountRepository {
 
     private val auth by inject(FirebaseAuth::class.java)

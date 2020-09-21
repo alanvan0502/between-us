@@ -50,6 +50,15 @@ android {
     }
 }
 
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile) {
+  kotlinOptions {
+    freeCompilerArgs += [
+      "-Xuse-experimental=kotlinx.coroutines.ExperimentalCoroutinesApi",
+      "-Xuse-experimental=kotlinx.coroutines.FlowPreview"
+    ]
+  }
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(":domain")

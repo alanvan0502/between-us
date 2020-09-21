@@ -4,6 +4,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply from: '../tests.gradle'
+apply from: '../experimental-coroutine.gradle'
 
 android {
     compileSdkVersion 30
@@ -34,6 +35,15 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+}
+
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile) {
+  kotlinOptions {
+    freeCompilerArgs += [
+      "-Xuse-experimental=kotlinx.coroutines.ExperimentalCoroutinesApi",
+      "-Xuse-experimental=kotlinx.coroutines.FlowPreview"
+    ]
+  }
 }
 
 dependencies {
